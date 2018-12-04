@@ -208,3 +208,33 @@ class Stitcher:
                     break
             return image
 
+class PanoramaStitchingUtility:
+    
+    @staticmethod
+    def frames_to_skip(self, distance, fps, coverage_angle, speed, overlap_percentage):
+        """
+        This function calculates number of frames to skip while doing panorama stitching from video input.
+
+        Arguments :
+
+        distance           : distance of camera from shelf in meters
+        fps                : frames per second of camera
+        coverage_angle     : coverage angle of camera in degrees
+        speed              : moving speed of camera parallel to shelf in meters per second
+        overlap_percentage : percentage of image to be skipped before taking next frame
+
+        Usage :
+
+        distance            = 1 m
+        fps                 = 30 fps
+        coverage_angle      = 90 degrees
+        speed               = 0.5 m/s
+        overlap_percentage  = 80
+
+        x = frames_to_skip(distance, fps, coverage_angle, speed, overlap_percentage)
+        x = 9
+        """
+        area = 2 * distance * (math.tan(math.radians(coverage_angle/2)))
+        to_skip_area = area * (overlap_percentage/100)
+        skip_frames = fps * speed / to_skip_area
+        return math.floor(skip_frames)
